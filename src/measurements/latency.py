@@ -23,8 +23,13 @@ def measure_latency(host="8.8.8.8", count=4, timeout=10):
     """
 
     # Reject invalid input: at least one ping request must be sent.
-    if count < 1:
-        raise ValueError("count must be at least 1")
+    if not isinstance(count, int) or isinstance(count, bool) or count < 1:
+        raise ValueError("count must be a positive integer")
+
+    if not isinstance(timeout, (int, float)) or isinstance(timeout, bool) or timeout <= 0:
+        raise ValueError("timeout must be a positive number")
+    if not isinstance(host, str) or not host.strip():
+        raise ValueError("host must be a non-empty string")
 
     # Identify the operating system so we can construct the correct command.
     system = platform.system().lower()
@@ -94,6 +99,29 @@ def measure_latency(host="8.8.8.8", count=4, timeout=10):
             output,
             re.IGNORECASE,
         )
+
+        sent_match = None
+        received_match = None
+
+        if loss_match:
+            result["packets_sent"] = int(loss_match.group(1))
+            result["packets_received"] = int(loss_match.group(2))
+        else:
+            sent_match = re.search(
+                r"Sent\s*=\s*(\d+)", output, re.IGNORECASE
+            )
+            received_match = re.search(
+                r"Received\s*=\s*(\d+)", output, re.IGNORECASE
+            )
+
+            if sent_match and received_match:
+                result["packets_sent"] = int(sent_match.group(1))
+                result["packets_received"] = int(received_match.group(1))
+
+        if not loss_match and not (sent_match and received_match):
+            result["status"] = "error"
+            result["error"] = "Could not parse ping packet summary"
+            return result
 
         # If the Linux-style summary was found, save the packet counts.
         if loss_match:

@@ -41,6 +41,21 @@ class TestLatency(unittest.TestCase):
         self.assertEqual(result["avg_latency_ms"], 25.0)
         self.assertEqual(result["max_latency_ms"], 30.0)
 
+    @patch("measurements.latency.subprocess.run")
+    def test_unrecognized_ping_output_returns_error(self, mock_run):
+        mock_run.return_value = Mock(
+            stdout="Unexpected ping output format",
+            stderr="",
+            returncode=1,
+        )
+
+        result = measure_latency(host="8.8.8.8", count=2)
+
+        self.assertEqual(result["status"], "error")
+        self.assertEqual(
+            result["error"],
+            "Could not parse ping packet summary",
+        )
 
 if __name__ == "__main__":
     # Run the tests when this file is executed directly.
