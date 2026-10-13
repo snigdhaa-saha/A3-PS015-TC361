@@ -37,3 +37,9 @@ The repository currently contains the initial network measurement layer. Diagnos
 Watch the NetDoctor by NetSages demonstration video on YouTube:
 
 [▶️ Watch NetDoctor Demo](https://youtu.be/bEbzBz9giQo)
+
+## 📁 Project Resources
+
+Access the complete project resources and supporting documents through the Google Drive folder below.
+
+[📂 Open NetDoctor Project Resources](https://drive.google.com/drive/folders/1QHm91foauBwimGV-R6lYwzedpYYDxTIm?usp=sharing)
