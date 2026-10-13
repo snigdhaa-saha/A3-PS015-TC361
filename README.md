@@ -31,3 +31,9 @@ python -m unittest discover -s tests -v
 
 Development Status:
 The repository currently contains the initial network measurement layer. Diagnosis, explainability, and further project components will be developed and integrated as the project progresses.
+
+## 🎥 Project Demo
+
+Watch the NetDoctor by NetSages demonstration video on YouTube:
+
+[▶️ Watch NetDoctor Demo](https://youtu.be/bEbzBz9giQo)
